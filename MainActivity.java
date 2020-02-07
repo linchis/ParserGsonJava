@@ -24,7 +24,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         String strjson = "{\"inmediata\":{\"error\":\"0\",\"descError\":null,\"datosBasicos\":{\"fechaEmisionTransf\":\"09/01/2020\",\"impTransferencia\":10.12,\"impComision\":6.0,\"impGastos\":0.0,\"impLiquido\":16.12,\"nombreOrdenante\":\"SUPERMAN\",\"descCuentaAbono\":\"CR 99 11111111122233444555\",\"descCuentaCargo\":\"ES 00 98765432100000000000\",\"impTotalDivBase\":null},\"listaComisiones\":null},\"urgente\":{\"error\":\"0\",\"descError\":\"PL_5304\",\"datosBasicos\":{\"fechaEmisionTransf\":\"09/01/2020\",\"impTransferencia\":10.12,\"impComision\":2.0,\"impGastos\":0.0,\"impLiquido\":12.12,\"nombreOrdenante\":\"SUPERMAN\",\"descCuentaAbono\":\"CR 99 11111111122233444555\",\"descCuentaCargo\":\"ES 00 98765432100000000000\",\"impTotalDivBase\":null},\"listaComisiones\":null},\"estandar\":{\"error\":\"0\",\"descError\":null,\"datosBasicos\":{\"fechaEmisionTransf\":\"09/01/2020\",\"impTransferencia\":10.12,\"impComision\":2.0,\"impGastos\":0.0,\"impLiquido\":12.12,\"nombreOrdenante\":\"SUPERMAN\",\"descCuentaAbono\":\"CR 99 11111111122233444555\",\"descCuentaCargo\":\"ES 00 98765432100000000000\",\"impTotalDivBase\":null},\"listaComisiones\":null}}";
-        parserCurrencyJson(strjson);
+        //parserCurrencyJson(strjson);
+        //TEST
+        for (Map.Entry<String, Currency> entry : parserCurrencyJson(strjson).entrySet()) {
+            System.out.println(entry.getValue().toString());
+        }
     }
 
     private Map<String, Currency> parserCurrencyJson(String stringInput) {
@@ -43,11 +47,7 @@ public class MainActivity extends AppCompatActivity {
                             createFromDTO(cDTO.getDatosBasicos()),
                             cDTO.getListaComisiones()));
         }
-        //TEST
-        for (Map.Entry<String, Currency> entry : parsedMap.entrySet()) {
-            System.out.println(entry.getValue().toString());
-        }
-        return null;
+        return parsedMap;
     }
 
     private DatosBasicos createFromDTO(DatosBasicosDTO dbDTO) {
