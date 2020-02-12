@@ -25,17 +25,29 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         String strjson = "{\"inmediata\":{\"error\":\"0\",\"descError\":null,\"datosBasicos\":{\"fechaEmisionTransf\":\"09/01/2020\",\"impTransferencia\":10.12,\"impComision\":6.0,\"impGastos\":0.0,\"impLiquido\":16.12,\"nombreOrdenante\":\"SUPERMAN\",\"descCuentaAbono\":\"CR 99 11111111122233444555\",\"descCuentaCargo\":\"ES 00 98765432100000000000\",\"impTotalDivBase\":null},\"listaComisiones\":null},\"urgente\":{\"error\":\"0\",\"descError\":\"PL_5304\",\"datosBasicos\":{\"fechaEmisionTransf\":\"09/01/2020\",\"impTransferencia\":10.12,\"impComision\":2.0,\"impGastos\":0.0,\"impLiquido\":12.12,\"nombreOrdenante\":\"SUPERMAN\",\"descCuentaAbono\":\"CR 99 11111111122233444555\",\"descCuentaCargo\":\"ES 00 98765432100000000000\",\"impTotalDivBase\":null},\"listaComisiones\":null},\"estandar\":{\"error\":\"0\",\"descError\":null,\"datosBasicos\":{\"fechaEmisionTransf\":\"09/01/2020\",\"impTransferencia\":10.12,\"impComision\":2.0,\"impGastos\":0.0,\"impLiquido\":12.12,\"nombreOrdenante\":\"SUPERMAN\",\"descCuentaAbono\":\"CR 99 11111111122233444555\",\"descCuentaCargo\":\"ES 00 98765432100000000000\",\"impTotalDivBase\":null},\"listaComisiones\":null}}";
 
+
+        //COMMISSION EXAMPLE
+        PreLiquidationsTransferDTO commissions = parseCommissionsJson(strjson);
+        commissions.toString();
+
+        //CURRENCY EXAMPLE
+        /*
         Map<String, Currency> parsedMap = parserCurrencyJson(strjson);
 
         //TEST
         for (Map.Entry<String, Currency> entry : parsedMap.entrySet()) {
             System.out.println(entry.getValue().toString());
         }
+        */
+
     }
 
+    //OLD
     private Map<String, Currency> parserCurrencyJson(String stringInput) {
 
         Gson gson = new GsonBuilder().create();
+        Currency currency = gson.fromJson(stringInput, Currency.class);
+
         Map<String, CurrencyDTO> decoded = gson.fromJson(stringInput,
                 new TypeToken<Map<String, CurrencyDTO>>() {
                 }.getType());
@@ -50,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return parsedMap;
     }
-
+    //OLD
     private DatosBasicos createFromDTO(DatosBasicosDTO dbDTO) {
         DatosBasicos db = null;
         try {
@@ -68,5 +80,17 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return db;
+    }
+
+
+    //NEW
+    private PreLiquidationsTransferDTO parseCommissionsJson(String json){
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(PreLiquidationsTransferDTO.class, new PreLiquidationTransferDeserializer());
+        Gson gson = builder.create();
+
+        return gson.fromJson(json, PreLiquidationsTransferDTO.class);
+
     }
 }
